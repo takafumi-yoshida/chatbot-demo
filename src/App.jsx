@@ -1,8 +1,10 @@
 import React from 'react';
 import './assets/styles/style.css';
 import defaultDataset from "./dataset";
-import {AnswersList} from "./components/index"
+import {AnswersList, Chats} from "./components/index"
+
 export default class App extends React.Component {
+
   constructor(props) {
     super(props)
     this.state = {
@@ -12,15 +14,45 @@ export default class App extends React.Component {
       dataset: defaultDataset,            //質問と回答のデータセット
       open: false             //お問い合わせフォーム用のモーダルの開閉を管理
     }
+    this.selectedAnswer = this.selectAnswer.bind(this)
   }
-  initAnswer = () => {
-    const initDataset = this.state.dataset[this.state.currentId];
-    const initAnswers = initDataset.answers;
-    this.setState({answers: initAnswers});
+
+  displayNextQuestion = (nextQuestionId) => {
+    const chats = this.state.chats
+    chats.push({
+      text: this.state.dataset[nextQuestionId].question,
+      type: 'question'
+    })
+
+    this.setState({
+      answers: this.state.dataset[nextQuestionId].answers,
+      chats: chats,
+      currentId: nextQuestionId
+    })
+  }
+
+  selectAnswer = (selectedAnswer,nextQuestionId) => {
+    switch(true) {
+      case (nextQuestionId === 'init'):
+        this.displayNextQuestion(nextQuestionId)
+        break;
+      default:
+        const chat = {
+          text: selectedAnswer,
+          type: 'answer'
+        }
+        const chats = this.state.chats
+        chats.push(chat)
+        this.setState({answers: chats});
+
+        this.displayNextQuestion(nextQuestionId)
+        break;
+    }
   }
 
   componentDidMount() {
-    this.initAnswer();
+   const initAnswer = "";
+   this.selectAnswer(initAnswer,this.state.currentId);
   }
 
   render() {
@@ -28,7 +60,8 @@ export default class App extends React.Component {
       <div>
         <section className="c-section">
           <div className="c-box">
-            <AnswersList answers={this.state.answers}/>
+            <Chats chats={this.state.chats}/>
+            <AnswersList answers={this.state.answers} select={this.selectAnswer}/>
           </div>
         </section>
       </div>
