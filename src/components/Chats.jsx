@@ -1,16 +1,19 @@
 import React from "react";
 import {Chat} from "./index";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles,createStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 
 
-const useStyles = makeStyles((theme) => ({
-  chats: {
-    height: 400,
-    padding: 0,
-    overflow: 'auto'
-  },
-}));
+const useStyles = makeStyles((theme) => (
+  createStyles({
+    "chats": {
+      height: 400,
+      padding: 0,
+      overflow: "auto",
+    }
+  })
+  
+)); 
 
 const Chats = (props) => {
   const classes = useStyles();
