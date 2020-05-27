@@ -29,6 +29,15 @@ export default class FormDialog extends React.Component {
     this.setState({discription: event.target.value})
   }
 
+  
+  submitForm = () => {
+    const name = this.state.name
+    const email = this.state.email
+    const discription = this.state.discription
+
+    //バリデーションを入れるべき。
+  }
+
 
   render() {
     return(
@@ -67,10 +76,10 @@ export default class FormDialog extends React.Component {
         </DialogContent>
         <DialogActions>
           <Button onClick={this.props.handleClose} color="primary">
-            Disagree
+            キャンセル
           </Button>
-          <Button onClick={this.props.handleClose} color="primary" autoFocus>
-            Agree
+          <Button onClick={this.submitForm} color="primary" autoFocus>
+            送信する
           </Button>
         </DialogActions>
       </Dialog>
